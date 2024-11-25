@@ -2,12 +2,27 @@ import axios from 'axios';
 
 const API_URL = process.env.API_URL;
 
-export async function getMessages() {
+/**export async function getMessages() {
     try {
         const response = await axios.get(API_URL + "messages/");
         return response.data
     } catch (error) {
-        console.log("Error obteniendo mensajes", error);
+        console.log("Error obteniendo mensajes", error.response.status, error.response.data);
+    }
+}*/
+
+export async function getMessages() {
+    try {
+        const response = await axios.get(API_URL + "messages/");
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.log("Error obteniendo mensajes:", error.response.status, error.response.data);
+        } else if (error.request) {
+            console.log("Error en la solicitud, no se recibió respuesta:", error.request);
+        } else {
+            console.log("Error configurando la solicitud:", error.message);
+        }
     }
 }
 
